@@ -5,7 +5,7 @@ import './App.css'
 
 
 function App() {
-  const [RSSfeed, setRSSfeed] = useState(null)
+  const [RSSfeed, setRSSfeed] = useState<any>(null)
 
   async function getRSSfeed() {
     const response = await fetch('http://127.0.0.1:8080/getFeedFromURL?url=https%3A%2F%2Fwww.reddit.com%2Fr%2FPython%2F.rss') // TO DO: fazer o fetch com o input do usuário
@@ -33,7 +33,7 @@ function App() {
         </button>
         <div>
           {RSSfeed !== null ?
-            <div>{RSSfeed.map(feed => (
+            <div>{RSSfeed.map((feed: any) => (
               <p>Titulo: {feed.title} <br></br>Autor: {feed.author} <br></br> Link: <a href={feed.link}>Link</a> <br></br> Publicacao: {feed.published}</p>
               ))
             }</div>
