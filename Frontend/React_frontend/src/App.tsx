@@ -8,16 +8,24 @@ function App() {
   const [RSSfeed, setRSSfeed] = useState<any>(null)
 
   async function getRSSfeed() {
-    const response = await fetch('http://127.0.0.1:8080/getFeedFromURL?url=https%3A%2F%2Fwww.reddit.com%2Fr%2FPython%2F.rss') // TO DO: fazer o fetch com o input do usuário
-    const data = await response.json()
-    setRSSfeed(data.Feed)
-    // data.Feed.map(feed => (
-    //   feed.authors.map(author => (
-    //     console.log(author.name)
-    //   )
-    //   )
-    // ))
-    return data
+    //Tradando um possivel erro de conexão com a API
+    try{
+      const response = await fetch('http://127.0.0.1:8080/getFeedFromURL?url=https%3A%2F%2Fwww.reddit.com%2Fr%2FPython%2F.rss') // TO DO: fazer o fetch com o input do usuário
+      //tratando um possivel erro de resposta da API
+      if (!response.ok) {
+        alert("Erro: a API retornou uma resposta inesperada")
+        throw new Error("Erro: a API retornou uma resposta inesperada")
+        return
+      }
+        const data = await response.json()
+        setRSSfeed(data.Feed)
+        return data
+    }catch(err){
+      alert("Erro ao conectar com a API (Verifique se a API está rodando)")
+      throw new Error("Erro ao conectar com a API (Verifique se a API está rodando))")
+      return
+    }
+
   }
   return (
     <>
