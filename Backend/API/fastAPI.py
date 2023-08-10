@@ -7,6 +7,8 @@ import feedparser
 from feedfinder2 import find_feeds
 from feedFinder import findfeed
 
+from fastapi.middleware.cors import CORSMiddleware
+
 class Noticia(BaseModel):
     title: str
     link: str
@@ -15,6 +17,20 @@ class Noticia(BaseModel):
     guid: str
 
 app = FastAPI()
+
+#CORS, para permitir requisições de outros domínios
+origins = [
+    "http://localhost",
+    "http://localhost:5173", #Frontend do React
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("")
 def read_root():
