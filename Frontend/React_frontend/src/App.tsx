@@ -39,27 +39,27 @@ function App() {
       </div>
       <h1>RSS Feed Catcher</h1>
       <div className="card">
-        <p>ex:<br/> https://timesofindia.indiatimes.com/rssfeedstopstories.cms <br/>https://www.reddit.com/r/Python/.rss</p>
+        <p>exemplos:<br/> Sem midia: https://www.reddit.com/r/Python/.rss <br/> Imagens: https://timesofindia.indiatimes.com/rssfeedstopstories.cms <br/> Audio: https://rss.art19.com/apology-line</p>
         <input placeholder='Digite uma URL' className="input" value={InputRSS} onChange={handleInputChange}></input>
         <button onClick={() => getRSSfeed(InputRSS)}>
           Procurar RSS Feed
         </button>
-        <div>
+        {/* <div> */}
           {RSSfeed !== null ?
-            <div>{RSSfeed.map((feed: any, i: number) => (
+            <div>{RSSfeed.map((feed: any) => (
                 <News title={feed.title} 
                       author={feed.author} 
                       summary={feed.summary} 
                       link={feed.link} 
                       imageLink={feed.enclosure} 
                       published={feed.published} 
-                      key={feed.link}/>
+                      key={feed.link+feed.summary+feed.title}/> //Garantir que não haverá repetição de keys
               ))}
             </div>
            :
            <p>Carregando...</p>
            }
-        </div>
+        {/* </div> */}
       </div>
       <p className="read-the-docs">
       © 2023 Multimegaman & Ant4r3z

@@ -3,7 +3,7 @@
     height: 500px;
     overflow: hidden;
     border-radius: 25px;
-    background-color: #0f0f0f; 
+    background-color: #5b5b5b; 
     display: inline-block;
     margin: 10px;
     position: relative;
@@ -26,6 +26,18 @@
     height: 100%;
     width: 100%;
     object-fit: cover;
+    align-items: center;
+}
+
+.newsImageForAudio{
+    height: 75%;
+    width: 100%;
+    object-fit: cover;
+}
+.audioController{
+    height: 20%;
+    width: 100%;
+
 }
 
 .NewsInfosContainer{
@@ -82,7 +94,7 @@
     width: 30%;
     font-family: inherit;
     font-size: 10px;
-    color: rgb(96, 96, 96);
+    color: rgb(178, 178, 178);
     text-align: right;
 }
 
@@ -92,6 +104,6 @@
     width: 70%;
     font-family: inherit;
     font-size: 10px;
-    color: rgb(96, 96, 96);
+    color: rgb(178, 178, 178);
     text-align: left;
 }

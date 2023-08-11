@@ -6,6 +6,8 @@ import { ptBR } from 'date-fns/locale';
 import {utcToZonedTime} from 'date-fns-tz'
 
 import rssLogo from './assets/rss_logo.png'
+import audio from './assets/audio.gif'
+import { mediaTypes } from './mediaTypes';
 
 type NewsProp = {
   title: string,
@@ -37,19 +39,49 @@ function sliceString(string: string, length: number) {
   return string
 }
 
-function imageLinkParser(imageLink: string) {
-  if (imageLink === '') {
-    return rssLogo
+function linkParser(link: string) {
+  if (link === '') {
+    return "#"
   }
-  return imageLink
+  return link
+}
+
+function checkMediaContent(mediaLink: string, types: Map<string, string>) {
+  try{
+    const url = new URL(mediaLink)
+    const extension = url.pathname.split(".")[1]
+
+    if (types.get(extension) == "img") {
+      return <img src={mediaLink} className="newsImage"></img>
+    }
+    if (types.get(extension) == "video") {
+      return <video src={mediaLink} className="newsImage"></video>
+    }
+    if (types.get(extension) == "audio") {
+      return <div className='newsImage'>
+              <img src={audio} className="newsImageForAudio"></img>
+              <audio controls className="audioController">
+                <source src={mediaLink} type="audio/mpeg"></source>
+              </audio>
+             </div>
+    }
+      // return <img src={(mediaLink)} className="newsImage"></img>
+      return <img src={rssLogo} className="newsImage"></img>
+
+  } catch(err) {
+    return <img src={rssLogo} className="newsImage"></img>
+  }
+  
 }
 
 export const News = ({title, author, summary, link, imageLink, published }: NewsProp) => 
 
 <div className="newsBody">
-  <a href={link} target="_blank">
+  
+  <a href={linkParser(link)} target="_blank">
   <div className='newsImageContainer'>
-    <img src={imageLinkParser(imageLink)} className="newsImage"></img>
+    {/* <img src={imageLinkParser(imageLink)} className="newsImage" key={link + "_media"}></img> */}
+    {checkMediaContent(imageLink, mediaTypes)}
   </div>
   
   <div className="NewsInfosContainer">
