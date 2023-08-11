@@ -39,7 +39,13 @@ function App() {
       </div>
       <h1>RSS Feed Catcher</h1>
       <div className="card">
-        <p>exemplos:<br/> Sem midia: https://www.reddit.com/r/Python/.rss <br/> Imagens: https://timesofindia.indiatimes.com/rssfeedstopstories.cms <br/> Audio: https://rss.art19.com/apology-line</p>
+        <p>
+          exemplos:<br/> 
+          Sem midia: https://www.reddit.com/r/Python/.rss <br/> 
+          Imagens: https://timesofindia.indiatimes.com/rssfeedstopstories.cms <br/> 
+          Audio: https://rss.art19.com/apology-line <br/>
+          Grande: https://feeds.fireside.fm/bibleinayear/rss <br/>
+          Video: </p>
         <input placeholder='Digite uma URL' className="input" value={InputRSS} onChange={handleInputChange}></input>
         <button onClick={() => getRSSfeed(InputRSS)}>
           Procurar RSS Feed
@@ -47,12 +53,7 @@ function App() {
         {/* <div> */}
           {RSSfeed !== null ?
             <div>{RSSfeed.map((feed: any) => (
-                <News title={feed.title} 
-                      author={feed.author} 
-                      summary={feed.summary} 
-                      link={feed.link} 
-                      imageLink={feed.enclosure} 
-                      published={feed.published} 
+                <News feed={feed}
                       key={feed.link+feed.summary+feed.title}/> //Garantir que não haverá repetição de keys
               ))}
             </div>

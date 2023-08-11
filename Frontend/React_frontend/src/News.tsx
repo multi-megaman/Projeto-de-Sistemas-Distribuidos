@@ -9,14 +9,15 @@ import rssLogo from './assets/rss_logo.png'
 import audio from './assets/audio.gif'
 import { mediaTypes } from './mediaTypes';
 
-type NewsProp = {
-  title: string,
-  author: string,
-  summary: string,
-  link: string,
-  imageLink: string,
-  published: string
-}
+// type NewsProp = {
+//   title: string,
+//   author: string,
+//   summary: string,
+//   link: string,
+//   mediaLink: string,
+//   enclosureLink: string,
+//   published: string
+// }
 
 function htmlParser(htmlString: string) {
   const parser = new DOMParser();
@@ -46,22 +47,36 @@ function linkParser(link: string) {
   return link
 }
 
-function checkMediaContent(mediaLink: string, types: Map<string, string>) {
+function checkMediaContent(feed: any, types: Map<string, string>) {
+  // TO DO: Capturar o header do link e verificar se é um arquivo de imagem, video ou audio
   try{
-    const url = new URL(mediaLink)
-    const extension = url.pathname.split(".")[1]
+    // const url = new URL(feed.media)
+    // const extension = url.pathname.split(".")[1]
+    let mediaSource: string
+    let mediaType: string
+    if (feed.media === '') {
+      mediaSource = feed.enclosure
+      mediaType = feed.enclosure_type
+    }
+    else {
+      mediaSource = feed.media
+      mediaType = feed.media_type
+    }
 
-    if (types.get(extension) == "img") {
-      return <img src={mediaLink} className="newsImage"></img>
+    const extension = mediaType.split("/")[0]
+    console.log(extension)
+
+    if (extension == "image") {
+      return <img src={mediaSource} className="newsImage"></img>
     }
-    if (types.get(extension) == "video") {
-      return <video src={mediaLink} className="newsImage"></video>
+    if (extension == "video") {
+      return <video src={mediaSource} className="newsImage"></video>
     }
-    if (types.get(extension) == "audio") {
+    if (extension == "audio") {
       return <div className='newsImage'>
               <img src={audio} className="newsImageForAudio"></img>
               <audio controls className="audioController">
-                <source src={mediaLink} type="audio/mpeg"></source>
+                <source src={mediaSource} type="audio/mpeg"></source>
               </audio>
              </div>
     }
@@ -74,22 +89,22 @@ function checkMediaContent(mediaLink: string, types: Map<string, string>) {
   
 }
 
-export const News = ({title, author, summary, link, imageLink, published }: NewsProp) => 
+export const News = ({feed}: any) => 
 
 <div className="newsBody">
   
-  <a href={linkParser(link)} target="_blank">
+  <a href={linkParser(feed.link)} target="_blank">
   <div className='newsImageContainer'>
-    {/* <img src={imageLinkParser(imageLink)} className="newsImage" key={link + "_media"}></img> */}
-    {checkMediaContent(imageLink, mediaTypes)}
+    {/* <img src={mediaLinkParser(mediaLink)} className="newsImage" key={link + "_media"}></img> */}
+    {checkMediaContent(feed, mediaTypes)}
   </div>
   
   <div className="NewsInfosContainer">
-    <div className='Newstitle' title ={htmlParser(title)}>{sliceString(htmlParser(title),100)}</div>
-    <div className="NewsSummary" title={htmlParser(summary)}>{sliceString(htmlParser(summary),200)}</div>
+    <div className='Newstitle' title ={htmlParser(feed.title)}>{sliceString(htmlParser(feed.title),100)}</div>
+    <div className="NewsSummary" title={htmlParser(feed.summary)}>{sliceString(htmlParser(feed.summary),200)}</div>
     <div className="NewsFooter">
-      <div className="NewsAuthor">{author}</div>
-      <div className="NewsDate">{(published)}</div>
+      <div className="NewsAuthor">{feed.author}</div>
+      <div className="NewsDate">{(feed.published)}</div>
     </div>
 
   </div>

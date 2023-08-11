@@ -37,16 +37,20 @@ def generalised_parse(url):
         # empty list
         if entry.enclosures:
             enclosure_href = entry.enclosures[0]['href']
+            enclosure_type = entry.enclosures[0]['type']
         
         else:
             enclosure_href = ''
+            enclosure_type = ''
 
         # check if there is media_content
         try:
             media_url = entry.media_content[0]['url']
+            media_type = entry.media_content[0]['type']
         
         except AttributeError:
             media_url = ''
+            media_type = ''
 
         # some entry have no attribute published, in that case check for attribute
         # updated, if that does not exist give default date of 1970-1-1
@@ -67,10 +71,20 @@ def generalised_parse(url):
             'summary': entry.get('summary', ''),
             'link': entry.get('link', ''),
             'enclosure' : enclosure_href,
+            'enclosure_type': enclosure_type,
             'media': media_url,
+            'media_type': media_type,
             'date': published_parsed,
             'published': published,
         }
         newsInfo.append(newEntry)
     
     return newsInfo
+
+def main():
+    url = 'https://www.abc.net.au/news/feed/51120/rss.xml'
+    newsInfo = generalised_parse(url)
+    # print(newsInfo)
+
+if __name__ == '__main__':
+    main()
