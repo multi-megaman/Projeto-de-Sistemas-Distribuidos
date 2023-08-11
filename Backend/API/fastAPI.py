@@ -6,6 +6,7 @@ from pydantic import BaseModel
 import feedparser
 from feedfinder2 import find_feeds
 from feedFinder import findfeed
+from rssParser import generalised_parse
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -39,12 +40,14 @@ def read_root():
 #URL de teste: https://www.reddit.com/r/Python/.rss
 @app.get("/getFeedFromURL")
 def getRSS(url: str):
-    feed = feedparser.parse(url)
+    feed = generalised_parse(url)
+    # feed = feedparser.parse(url)
+
     # feed = []
     # feedsList = find_feeds(url)
     # for findedFeed in feedsList:
     #     feed.append(feedparser.parse(findedFeed).entries)
-    return {"Feed": feed.entries}
+    return {"Feed": feed}
 
 # @app.post("/postarInfo")
 # def getTitulo(noticia: Noticia):

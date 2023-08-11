@@ -2,16 +2,15 @@ import { useState } from 'react'
 import rssLogo from './assets/rss_logo.png'
 import './App.css'
 
-
+import {News} from './News'
 
 function App() {
   const [RSSfeed, setRSSfeed] = useState<any>(null)
 
   async function getRSSfeed() {
-    //Tradando um possivel erro de conexão com a API
+
     try{
-      const response = await fetch('http://127.0.0.1:8080/getFeedFromURL?url=https%3A%2F%2Fwww.reddit.com%2Fr%2FPython%2F.rss') // TO DO: fazer o fetch com o input do usuário
-      //tratando um possivel erro de resposta da API
+      const response = await fetch('http://127.0.0.1:8080/getFeedFromURL?url=https%3A%2F%2Ftimesofindia.indiatimes.com%2Frssfeedstopstories.cms') // TO DO: fazer o fetch com o input do usuário 'http://127.0.0.1:8080/getFeedFromURL?url=https%3A%2F%2Fwww.reddit.com%2Fr%2FPython%2F.rss'
       if (!response.ok) {
         alert("Erro: a API retornou uma resposta inesperada")
         throw new Error("Erro: a API retornou uma resposta inesperada")
@@ -25,7 +24,6 @@ function App() {
       throw new Error("Erro ao conectar com a API (Verifique se a API está rodando))")
       return
     }
-
   }
   return (
     <>
@@ -36,24 +34,25 @@ function App() {
       </div>
       <h1>RSS Feed Cather</h1>
       <div className="card">
-        <button onClick={() => getRSSfeed()}/*onClick={() => setRSSfeed((RSSfeed) => RSSfeed + 1)}*/>
+        <button onClick={() => getRSSfeed()}>
           Procurar RSS Feed
         </button>
         <div>
           {RSSfeed !== null ?
-            <div>{RSSfeed.map((feed: any) => (
-              <p>Titulo: {feed.title} <br></br>Autor: {feed.author} <br></br> Link: <a href={feed.link}>Link</a> <br></br> Publicacao: {feed.published}</p>
-              ))
-            }</div>
+            <div>{RSSfeed.map((feed: any, i: number) => (
+                <News title={feed.title} 
+                      author={feed.author} 
+                      summary={feed.summary} 
+                      link={feed.link} 
+                      imageLink={feed.enclosure} 
+                      published={feed.published} 
+                      key={feed.link}/>
+              ))}
+            </div>
            :
            <p>Carregando...</p>
            }
-
-          {/* {RSSfeed} */}
         </div>
-        {/* <p>
-          Feito por <code>Everton & Joyce</code>
-        </p> */}
       </div>
       <p className="read-the-docs">
       © 2023 Multimegaman & Ant4r3z
