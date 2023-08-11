@@ -37,7 +37,7 @@ function App() {
           <img src={rssLogo} className="logo" alt="RSS Logo" />
         </a>
       </div>
-      <h1>RSS Feed Cather</h1>
+      <h1>RSS Feed Catcher</h1>
       <div className="card">
         <p>ex:<br/> https://timesofindia.indiatimes.com/rssfeedstopstories.cms <br/>https://www.reddit.com/r/Python/.rss</p>
         <input placeholder='Digite uma URL' className="input" value={InputRSS} onChange={handleInputChange}></input>
