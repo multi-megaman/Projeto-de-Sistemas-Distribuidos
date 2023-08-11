@@ -5,6 +5,8 @@ import { parse, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import {utcToZonedTime} from 'date-fns-tz'
 
+import rssLogo from './assets/rss_logo.png'
+
 type NewsProp = {
   title: string,
   author: string,
@@ -35,12 +37,19 @@ function sliceString(string: string, length: number) {
   return string
 }
 
+function imageLinkParser(imageLink: string) {
+  if (imageLink === '') {
+    return rssLogo
+  }
+  return imageLink
+}
+
 export const News = ({title, author, summary, link, imageLink, published }: NewsProp) => 
 
 <div className="newsBody">
   <a href={link} target="_blank">
   <div className='newsImageContainer'>
-    <img src={imageLink} className="newsImage"></img>
+    <img src={imageLinkParser(imageLink)} className="newsImage"></img>
   </div>
   
   <div className="NewsInfosContainer">
@@ -48,7 +57,7 @@ export const News = ({title, author, summary, link, imageLink, published }: News
     <div className="NewsSummary" title={htmlParser(summary)}>{sliceString(htmlParser(summary),200)}</div>
     <div className="NewsFooter">
       <div className="NewsAuthor">{author}</div>
-      <div className="NewsDate">{dateParser(published)}</div>
+      <div className="NewsDate">{(published)}</div>
     </div>
 
   </div>

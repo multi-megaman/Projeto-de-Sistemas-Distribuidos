@@ -6,24 +6,29 @@ import {News} from './News'
 
 function App() {
   const [RSSfeed, setRSSfeed] = useState<any>(null)
+  const [InputRSS, setInputRSS] = useState<string>('')
 
-  async function getRSSfeed() {
+  async function getRSSfeed(url: string) {
 
     try{
-      const response = await fetch('http://127.0.0.1:8080/getFeedFromURL?url=https%3A%2F%2Ftimesofindia.indiatimes.com%2Frssfeedstopstories.cms') // TO DO: fazer o fetch com o input do usuário 'http://127.0.0.1:8080/getFeedFromURL?url=https%3A%2F%2Fwww.reddit.com%2Fr%2FPython%2F.rss'
+      const response = await fetch(`http://127.0.0.1:8080/getFeedFromURL?url=${url}`) // 'http://127.0.0.1:8080/getFeedFromURL?url=https%3A%2F%2Fwww.reddit.com%2Fr%2FPython%2F.rss'
       if (!response.ok) {
         alert("Erro: a API retornou uma resposta inesperada")
-        throw new Error("Erro: a API retornou uma resposta inesperada")
         return
+        throw new Error("Erro: a API retornou uma resposta inesperada")
       }
         const data = await response.json()
         setRSSfeed(data.Feed)
         return data
     }catch(err){
       alert("Erro ao conectar com a API (Verifique se a API está rodando)")
-      throw new Error("Erro ao conectar com a API (Verifique se a API está rodando))")
       return
+      throw new Error("Erro ao conectar com a API (Verifique se a API está rodando))")
     }
+  }
+
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setInputRSS(event.target.value)
   }
   return (
     <>
@@ -34,7 +39,9 @@ function App() {
       </div>
       <h1>RSS Feed Cather</h1>
       <div className="card">
-        <button onClick={() => getRSSfeed()}>
+        <p>ex:<br/> https://timesofindia.indiatimes.com/rssfeedstopstories.cms <br/>https://www.reddit.com/r/Python/.rss</p>
+        <input placeholder='Digite uma URL' className="input" value={InputRSS} onChange={handleInputChange}></input>
+        <button onClick={() => getRSSfeed(InputRSS)}>
           Procurar RSS Feed
         </button>
         <div>

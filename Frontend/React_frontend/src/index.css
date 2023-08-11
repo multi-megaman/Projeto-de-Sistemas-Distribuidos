@@ -46,6 +46,8 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  width: 175px;
+  height: 45px;
 }
 button:hover {
   border-color: #646cff;
@@ -53,6 +55,12 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.input {
+  width: 350px;
+  height: 40px;
+  margin-bottom: 15px;
 }
 
 @media (prefers-color-scheme: light) {
