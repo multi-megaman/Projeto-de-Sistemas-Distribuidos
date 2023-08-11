@@ -2,11 +2,17 @@
     width: 350px;
     height: 500px;
     overflow: hidden;
-    /* border-radius: 50px; */
+    border-radius: 25px;
     background-color: #0f0f0f; 
     display: inline-block;
     margin: 10px;
     position: relative;
+    transition-duration: 0.1s;
+}
+
+.newsBody:hover{
+    box-shadow: 0px 0px 10px 5px #0f0f0f;
+    scale: 1.05;
 }
 
 

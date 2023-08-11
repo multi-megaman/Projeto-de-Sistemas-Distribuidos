@@ -38,21 +38,20 @@ function sliceString(string: string, length: number) {
 export const News = ({title, author, summary, link, imageLink, published }: NewsProp) => 
 
 <div className="newsBody">
-  {/* <a href={link}> */}
+  <a href={link} target="_blank">
   <div className='newsImageContainer'>
     <img src={imageLink} className="newsImage"></img>
   </div>
   
   <div className="NewsInfosContainer">
     <div className='Newstitle' title ={htmlParser(title)}>{sliceString(htmlParser(title),100)}</div>
-
     <div className="NewsSummary" title={htmlParser(summary)}>{sliceString(htmlParser(summary),200)}</div>
-    
     <div className="NewsFooter">
       <div className="NewsAuthor">{author}</div>
       <div className="NewsDate">{dateParser(published)}</div>
     </div>
+
   </div>
-  {/* </a> */}
+  </a>
 </div>
 
