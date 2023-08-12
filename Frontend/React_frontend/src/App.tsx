@@ -7,11 +7,12 @@ import {News} from './News'
 function App() {
   const [RSSfeed, setRSSfeed] = useState<any>(null)
   const [InputRSS, setInputRSS] = useState<string>('')
+  const [InputQnt, setQnt] = useState<number>(20)
 
-  async function getRSSfeed(url: string) {
+  async function getRSSfeed(url: string, qnt: number) {
 
     try{
-      const response = await fetch(`http://127.0.0.1:8080/getFeedFromURL?url=${url}`) // 'http://127.0.0.1:8080/getFeedFromURL?url=https%3A%2F%2Fwww.reddit.com%2Fr%2FPython%2F.rss'
+      const response = await fetch(`http://127.0.0.1:8080/getFeedFromURL?url=${url}&qnt=${qnt}`) // 'http://127.0.0.1:8080/getFeedFromURL?url=https%3A%2F%2Fwww.reddit.com%2Fr%2FPython%2F.rss'
       if (!response.ok) {
         alert("Erro: a API retornou uma resposta inesperada")
         return
@@ -30,6 +31,10 @@ function App() {
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     setInputRSS(event.target.value)
   }
+
+  function handleQntInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setQnt(Number(event.target.value))
+  }
   return (
     <>
       <div>
@@ -47,7 +52,8 @@ function App() {
           Grande: https://feeds.fireside.fm/bibleinayear/rss <br/>
           Video: </p>
         <input placeholder='Digite uma URL' className="input" value={InputRSS} onChange={handleInputChange}></input>
-        <button onClick={() => getRSSfeed(InputRSS)}>
+        <input type='number' placeholder='Quantidade de noticias máximas' className="input" value={InputQnt} onChange={handleQntInputChange}></input>
+        <button onClick={() => getRSSfeed(InputRSS,InputQnt )}>
           Procurar RSS Feed
         </button>
         {/* <div> */}

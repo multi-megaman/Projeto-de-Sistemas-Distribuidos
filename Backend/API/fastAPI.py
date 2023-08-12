@@ -39,10 +39,14 @@ def read_root():
 
 #URL de teste: https://www.reddit.com/r/Python/.rss
 @app.get("/getFeedFromURL")
-def getRSS(url: str):
+def getRSS(url: str, qnt: int | None = None):
     feed = generalised_parse(url)
-    # feed = feedparser.parse(url)
-
+    if qnt > 0: 
+        if qnt != None:
+            if qnt > len(feed):
+                qnt = len(feed)
+            feed = feed[:qnt]
+    #TO DO: Fazer o findfeed funcionar
     # feed = []
     # feedsList = find_feeds(url)
     # for findedFeed in feedsList:
