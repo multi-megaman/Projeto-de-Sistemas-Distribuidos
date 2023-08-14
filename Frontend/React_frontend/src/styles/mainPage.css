@@ -1,0 +1,21 @@
+.mainPage_content{
+    width: 100vw;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-content: start;
+    text-align: center;
+    font-weight: bold;
+    /* overflow-y: auto; */
+}
+.user_content{
+    width: 80%;
+    height: 99vh;
+    align-self: center;
+    /* border: 2px green solid; */
+    overflow-y: auto;
+}
+
+.feed_rss{
+    width: 100%;
+}

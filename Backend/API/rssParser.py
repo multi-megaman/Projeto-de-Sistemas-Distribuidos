@@ -48,7 +48,7 @@ def generalised_parse(url):
             media_url = entry.media_content[0]['url']
             media_type = entry.media_content[0]['type']
         
-        except AttributeError:
+        except (AttributeError, KeyError):
             media_url = ''
             media_type = ''
 
@@ -58,7 +58,7 @@ def generalised_parse(url):
             published = entry.published
             published_parsed = entry.updated_parsed
         
-        except AttributeError:
+        except (AttributeError, KeyError):
             published = entry.get('updated', '1970-01-01')
             published_parsed = entry.get('updated_parsed', 
                 time.struct_time((1970, 1, 1, 0, 0, 0, 0, 0, 0)))
@@ -82,7 +82,7 @@ def generalised_parse(url):
     return newsInfo
 
 def main():
-    url = 'https://www.abc.net.au/news/feed/51120/rss.xml'
+    url = 'https://g1.globo.com/dynamo/brasil/rss2.xml'
     newsInfo = generalised_parse(url)
     # print(newsInfo)
 

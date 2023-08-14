@@ -1,13 +1,12 @@
 import React from 'react'; // we need this to make JSX compile
-import './News.css'
+import '../styles/news.css'
 
 import { parse, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import {utcToZonedTime} from 'date-fns-tz'
 
-import rssLogo from './assets/rss_logo.png'
-import audio from './assets/audio.gif'
-import { mediaTypes } from './mediaTypes';
+import rssLogo from '../assets/rss_logo.png'
+import audio from '../assets/audio.gif'
 
 // type NewsProp = {
 //   title: string,
@@ -47,7 +46,7 @@ function linkParser(link: string) {
   return link
 }
 
-function checkMediaContent(feed: any, types: Map<string, string>) {
+function checkMediaContent(feed: any) {
   // TO DO: Capturar o header do link e verificar se é um arquivo de imagem, video ou audio
   try{
     // const url = new URL(feed.media)
@@ -64,7 +63,6 @@ function checkMediaContent(feed: any, types: Map<string, string>) {
     }
 
     const extension = mediaType.split("/")[0]
-    console.log(extension)
 
     if (extension == "image") {
       return <img src={mediaSource} className="newsImage"></img>
@@ -96,7 +94,7 @@ export const News = ({feed}: any) =>
   <a href={linkParser(feed.link)} target="_blank">
   <div className='newsImageContainer'>
     {/* <img src={mediaLinkParser(mediaLink)} className="newsImage" key={link + "_media"}></img> */}
-    {checkMediaContent(feed, mediaTypes)}
+    {checkMediaContent(feed)}
   </div>
   
   <div className="NewsInfosContainer">
