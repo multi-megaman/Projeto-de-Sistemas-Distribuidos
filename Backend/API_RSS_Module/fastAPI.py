@@ -10,12 +10,12 @@ from rssParser import generalised_parse
 
 from fastapi.middleware.cors import CORSMiddleware
 
-class Noticia(BaseModel):
-    title: str
-    link: str
-    description: str
-    pubDate: str
-    guid: str
+# class Noticia(BaseModel):
+#     title: str
+#     link: str
+#     description: str
+#     pubDate: str
+#     guid: str
 
 app = FastAPI()
 

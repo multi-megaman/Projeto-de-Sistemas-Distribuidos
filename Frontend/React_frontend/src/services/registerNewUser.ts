@@ -1,11 +1,20 @@
-import { apiUrl } from "../globalVariables/globalVariables";
-import Cookies from "js-cookie";
+import { userApiUrl } from "../globalVariables/globalVariables";
+import axios from "axios";
+// import Cookies from "js-cookie";
+// export async function RegisterNewUser(userInfos: any){
+//     const response: any = await fetch(`${userApiUrl}/createUser`, {
+//         method: "POST",
+//         mode: "cors",
+//         body: userInfos
+//     });
+//     // Cookies.set("token", response.token);
+//     console.log(response)
+//     return response;
+// }
+
 export async function RegisterNewUser(userInfos: any){
-    const response: any = await fetch(`${apiUrl}/user/create`, {
-        method: "POST",
-        mode: "cors",
-        body: JSON.stringify(userInfos)
-    });
-    Cookies.set("token", response.token);
-    return response.json();
+    const response: any = await axios.post(`${userApiUrl}/createUser`,userInfos);
+    // Cookies.set("token", response.token);
+    console.log(response)
+    return response;
 }

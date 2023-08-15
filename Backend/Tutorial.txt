@@ -1,0 +1,5 @@
+Caso tenha feito alguma alteração na estrutura do Banco de dados, rodar esse comando abaixo:
+$ npx prisma migrate dev --name init
+
+Para visualizar a estrutura da base de dados:
+$ npx prisma studio

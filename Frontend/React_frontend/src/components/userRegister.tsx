@@ -17,7 +17,14 @@ export const UserRegister = () =>   {
 
  async function handleSubmit(e: any, postBody: any){
     e.preventDefault()
-    RegisterNewUser(postBody)
+    const response = await RegisterNewUser(postBody);
+    if(response.status === 200){
+      alert("Usuário cadastrado com sucesso!")
+      window.location.reload()
+    }
+    else{
+      alert("Erro ao cadastrar usuário!")
+    }
   };
 
   return (

@@ -47,6 +47,7 @@ return(
         exemplos:<br/> 
         Imagens: https://timesofindia.indiatimes.com/rssfeedstopstories.cms <br/> 
         Audio: https://rss.art19.com/apology-line <br/>
+        UFRPE: https://www.ufrpe.br/rss.xml <br/>
         </p>
         <input placeholder='Digite uma URL' className="input" value={InputRSS} onChange={handleInputChange}></input>
         <input type='number' placeholder='Quantidade de noticias máximas' className="input" value={InputQnt} onChange={handleQntInputChange}></input>
