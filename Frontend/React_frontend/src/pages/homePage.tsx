@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
+import Popup from 'reactjs-popup';
 import rssLogo from '../assets/rss_logo.png'
-import '../styles/homePage.css'
-
-import {News} from '../components/News'
-import {getRSSFeedFromURL} from '../services/getRSSFeedFromURL'
 import { Link } from "react-router-dom";
 
+import {News} from '../components/News'
+import {UserRegister} from "../components/userRegister"
+
+import {getRSSFeedFromURL} from '../services/getRSSFeedFromURL'
 import { mainPageUrl } from "../globalVariables/globalVariables";
+
+import '../styles/homePage.css'
 
 function HomePage() {
   const [RSSfeed, setRSSfeed] = useState<any>(null)
@@ -27,7 +30,8 @@ function HomePage() {
   }
 
 return(
-    <div className="homepage_content">
+  <div className="homepage_content">
+    
     <div>
         <a href="https://pt.wikipedia.org/wiki/RSS" target="_blank">
         <img src={rssLogo} className="logo" alt="RSS Logo" />
@@ -35,6 +39,9 @@ return(
     </div>
     <h1>RSS Feed Catcher</h1>
     <div className="card">
+        <Popup trigger={<button className="button"> Teste Cadastro </button>} modal>
+          {<UserRegister/>}
+        </Popup>
         <Link to={mainPageUrl}>Teste Login</Link>
         <p>
         exemplos:<br/> 
