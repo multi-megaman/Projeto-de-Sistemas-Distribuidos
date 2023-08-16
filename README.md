@@ -17,6 +17,14 @@ Baixar o [NPM](https://nodejs.org/en/download) <br>
 ```$ cd diretorio/do/projeto/Frontend/React_frontend``` <br>
 ```$ npm install``` <br>
 
+<hl>
+
+# Para iniciar o Sistema Distribuido inteiro, basta executar o arquivo ```auto_start.bat``` se você estiver utilizando o Windows 
+
+<hl>
+
+## Caso queira iniciar módulo por módulo, siga os passos abaixo:
+
 ## Para iniciar a API do Feed RSS:
 ### Via linha de código
 ```$ cd diretorio/do/projeto``` <br>
