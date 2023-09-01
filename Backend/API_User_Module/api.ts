@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import {createUser} from './database'
+import {CreateUser, Login, GetUserData} from './database'
 const app = express();
 const PORT = 3000;
 
@@ -16,8 +16,17 @@ app.get('/', (req, res) => {
 });
 
 app.post('/createUser', (req, res) => {
-  createUser(req, res);
-  console.log("Usuario " + req.body.name + " criado com sucesso!");
+  CreateUser(req, res);
+
+});
+
+app.post('/login', (req, res) => {
+  Login(req, res);
+
+});
+
+app.post('/user/infos', (req, res) => {
+  GetUserData(req, res);
 });
 
 app.listen(PORT, () => {

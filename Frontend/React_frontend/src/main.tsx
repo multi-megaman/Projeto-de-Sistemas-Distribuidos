@@ -7,9 +7,8 @@ import {
 import './index.css'
 
 import HomePage from "./pages/homePage";
-import { homePageUrl } from "./globalVariables/globalVariables";
+import { homePageUrl, mainPageUrl } from "./globalVariables/globalVariables";
 import MainPage from "./pages/mainPage";
-import { mainPageUrl } from "./globalVariables/globalVariables";
 import NotFound404 from "./pages/errorPage";
 
 const router = createBrowserRouter([
@@ -19,7 +18,8 @@ const router = createBrowserRouter([
     errorElement: <NotFound404 />,
   },
   { path: mainPageUrl, 
-    element: <MainPage /> }
+    element: <MainPage /> 
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

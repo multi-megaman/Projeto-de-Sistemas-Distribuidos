@@ -8,32 +8,41 @@ import {News} from '../components/News'
 import {getRSSFeedFromURL} from '../services/getRSSFeedFromURL'
 import {getLoggedUserInfos} from '../services/getLoggedUserInfos'
 import SideBar from "../components/sideBar";
+import Cookies from "js-cookie";
 import { set } from "date-fns";
 
 
 
 
 function MainPage() {
-  const [UserURLList, setUserURLList] = useState<string[]>([])
   const [RSSfeed, setRSSfeed] = useState<any>(null)
-  const [Username, setUsername] = useState<string>("")
+  const [userData, setUserData] = useState<any>({})
+  const [userLinks, setUserLinks] = useState<string[]>([])
+
+
 
   
-  async function initUserInfos(request: any){
-    const userInfos = await getLoggedUserInfos(request);
-    setUserURLList(userInfos.links);
-    setUsername(userInfos.username);
+  async function initUserInfos(){
+    //transformando o cookie em um json
+
+    const  userInfos = await getLoggedUserInfos(Cookies.get("user"));
+    setUserData(JSON.parse(userInfos.user));
+    // console.log("userInfos: ", JSON.parse(userInfos.user));
+    setUserLinks(JSON.parse(userInfos.links));
+    console.log("userLinks: ", JSON.parse(userInfos.links));
+
     return userInfos;
   }
 
   useEffect(() => {
-    // const urlListResponse = async () =>{
-    //  const response =  await FillUrlList("teste");
-    //  return response;
-    // }
 
-    // const response = urlListResponse();
-    initUserInfos("response")
+
+    //se o Cookie não existir, redirecionar para a home page
+    if(Cookies.get("user") === undefined){
+      window.location.href = "/";
+    }
+
+    initUserInfos();
   }, [])
 
   async function updateRSSfeed(url: string, qnt: number) {
@@ -43,7 +52,7 @@ function MainPage() {
   return (
     <div className="mainPage_content">
       {/* SideBar */}
-      <SideBar urlList={UserURLList} updateRSSfeed={updateRSSfeed}/>
+      <SideBar user={userData} link={userLinks} updateRSSfeed={updateRSSfeed}/>
       
       {/* Content */}
       <div className="user_content">

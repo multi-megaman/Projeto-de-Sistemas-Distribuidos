@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 import {News} from '../components/News'
 import {UserRegister} from "../components/userRegister"
+import { UserLogin } from "../components/userLogin";
 
 import {getRSSFeedFromURL} from '../services/getRSSFeedFromURL'
 import { mainPageUrl } from "../globalVariables/globalVariables";
@@ -42,7 +43,10 @@ return(
         <Popup trigger={<button className="button"> Teste Cadastro </button>} modal>
           {<UserRegister/>}
         </Popup>
-        <Link to={mainPageUrl}>Teste Login</Link>
+        <Popup trigger={<button className="button"> Teste Login </button>} modal>
+          {<UserLogin/>}
+        </Popup>
+        {/* <Link to={mainPageUrl}>Teste Login</Link> */}
         <p>
         exemplos:<br/> 
         Imagens: https://timesofindia.indiatimes.com/rssfeedstopstories.cms <br/> 

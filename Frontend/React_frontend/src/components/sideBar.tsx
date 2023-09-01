@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import '../styles/sideBar.css'
 import rssLogo from '../assets/rss_logo.png'
 
@@ -7,20 +7,28 @@ function getURLName(url: string){ //Atualmente parece que não faz nada, mas no 
   return (objUrl.hostname + objUrl.pathname)
 }
 // TO DO: fazer com que a lista de URLs do usuário venha do backend
-function SideBar({urlList, updateRSSfeed}: any) {
-  const [UserURLList, setUserURLList] = useState<string[]>(urlList)
+function SideBar({user, links, updateRSSfeed}: any) {
+  const [UserURLList, setUserURLList] = useState<string[]>([])
+  
+  useEffect(() => {
+    if(links ==! undefined){
+      console.log("links: ",links)
+      setUserURLList(links)
+    }
+  }, [links])
     return (
       <>
         <div id="sidebar" className='sidebar'>
           <div className="sidebar_header">
             <img src={rssLogo} className="sidebar_logo" alt="RSS Logo" />
             <h2>RSS Feed Catcher</h2>
+            <h3>{user.name}</h3>
             {/* <h3>Name Placeholder</h3> */}
           </div>
 
         <div className="sidebar_content">
           <ul className='user_url_list'>
-          {urlList.map((url: string) => 
+          {UserURLList.map((url: string) => 
             <li key={url} title={url} className="user_url" onClick={() => updateRSSfeed(url,20)}>{getURLName(url)}</li>)}
           </ul>
         </div>

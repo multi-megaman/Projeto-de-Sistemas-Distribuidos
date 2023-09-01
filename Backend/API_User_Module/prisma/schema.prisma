@@ -12,19 +12,20 @@ model User {
   email String  @unique
   name  String
   password String
-  links UsersLinks[]
+  links Link[]
 }
 
 model Link {
   id        Int     @id @default(autoincrement())
   url       String
-  users     UsersLinks[]
+  userId    Int  
+  user      User    @relation(fields: [userId], references: [id])
 }
 
-model UsersLinks {
-  id        Int     @id @default(autoincrement())
-  userId    Int
-  linkId    Int
-  user      User    @relation(fields: [userId], references: [id])
-  link      Link   @relation(fields: [linkId], references: [id])
-}
+// model UsersLinks {
+//   id        Int     @id @default(autoincrement())
+//   userId    Int
+//   linkId    Int
+//   user      User    @relation(fields: [userId], references: [id])
+//   link      Link   @relation(fields: [linkId], references: [id])
+// }

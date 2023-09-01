@@ -1,9 +1,37 @@
 import { PrismaClient } from '@prisma/client'
+import jwt, { JwtPayload } from "jsonwebtoken";
+
+import express from "express";
+
 
 const prisma = new PrismaClient()
 
-export async function createUser(req: any, res: any) {
-    const { id } = req.query
+// Verifica se o token é válido
+export async function VerifyToken(req: any, res: any) {
+    const token = req.headers['x-access-token'] as string
+    //se o token não existir
+    if (!token) {
+        res.json({ auth: false, message: "Token não fornecido" })
+
+    }
+    //se o token existir
+    else{
+        jwt.verify(token, process.env.SECRET as string, (err: any, decoded: any) => {
+            //se o token estiver inválido
+            if (err) {
+                res.json({ auth: false, message: "Token inválido" })
+            }
+            //se o token estiver válido apenas continue com o restante do código
+            else {
+                req.userId = (decoded as JwtPayload).id;
+            }
+
+        })
+    }
+}
+
+// Cria um usuário e retorna o jwt token para o usuário
+export async function CreateUser(req: any, res: any) {
     const { name, email, password } = req.body
 
     const user = await prisma.user.create({
@@ -12,6 +40,85 @@ export async function createUser(req: any, res: any) {
             email: email,
             password: password,
         },
-    }).then((u) => {res.json(user)
-    }).catch((error) => {res.json(error)})
+    }).then((u) => {
+        // Cria o token
+        console.log(process.env.SECRET)
+        const token = jwt.sign({ id: u.id }, process.env.SECRET as string, {
+            expiresIn: 86400 // expira em 24 horas
+        })
+        //retirando a senha do usuário antes de retornar
+        u.password = ""
+        res.json({ auth: true, token: token, user: u })
+
+    //tratando erros
+    }).catch((error) => {
+        //se o erro for de email duplicado
+        if (error.code === "P2002") {
+            res.json({ auth: false, message: "Email ja existe" })
+        } 
+        //se o erro for de senha curta
+        else if (error.code === "P2003") {
+            res.json({ auth: false, message: "Senha muito curta" })
+        }
+        else {
+            res.json({ auth: false, message: "Erro desconhecido" })
+        }
+    })
+}
+
+// Faz o login do usuário e retorna o jwt token para o usuário
+export async function Login(req: any, res: any) {
+    const { email, password } = req.body
+    const user = await prisma.user.findUnique({
+        where: {
+            email: email
+        }
+    }).then((u) => {
+        //se o usuário não existir
+        if (!u) {
+            res.json({ auth: false, message: "Usuário não existe" })
+        }
+        //se a senha estiver errada
+        else if (u.password !== password) {
+            res.json({ auth: false, message: "Senha incorreta" })
+        }
+        //se o usuário existir e a senha estiver correta
+        else {
+            // Cria o token
+            const token = jwt.sign({ id: u.id }, process.env.SECRET as string, {
+                expiresIn: 86400 // expira em 24 horas
+            })
+            //retirando a senha do usuário antes de retornar
+            u.password = ""
+            res.json({ auth: true, token: token, user: JSON.stringify(u) })
+        }
+    })
+}
+
+// Retorna os dados do usuário logado
+export async function GetUserData(req: any, res: any) {
+    VerifyToken(req, res);
+    //fazendo uma consulta ao banco de dados na tabela de links para pegar os links do usuário
+    const links = await prisma.link.findMany({
+        where: {
+            userId: req.userId
+        }
+    }).then((links) => {
+        //dando um refresh no token do usuário
+        const token = jwt.sign({ id: req.userId }, process.env.SECRET as string, {
+            expiresIn: 86400 // expira em 24 horas
+        })
+        //capturando as informações atualizadas do usuário
+        const user = prisma.user.findUnique({
+            where: {
+                id: req.userId
+            }
+        }).then((user) => {
+            //retirando a senha do usuário antes de retornar
+            user!.password = ""
+            res.json({ auth: true, user: JSON.stringify(user), links: JSON.stringify(links), token: token })
+        })
+
+    })
+    
 }

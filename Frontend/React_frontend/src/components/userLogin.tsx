@@ -1,12 +1,11 @@
 import {useState } from "react";
-
-import { RegisterNewUser } from "../services/registerNewUser";
-
+import { Navigate } from "react-router-dom";
+import { makeLogin } from "../services/makeLogin";
+import { mainPageUrl } from "../globalVariables/globalVariables";
 import '../styles/registerUser.css'
 
-export const UserRegister = () =>   {
+export const UserLogin = () =>   {
   const [newUserData, setnewUserData] = useState({
-    name: "",
     email: "",
     password: "",
   });
@@ -17,46 +16,33 @@ export const UserRegister = () =>   {
 
  async function handleSubmit(e: any, postBody: any){
     e.preventDefault()
-    const response = await RegisterNewUser(postBody);
-    if(response.status === 200){
-      alert("Usuário cadastrado com sucesso!")
+    const response = await makeLogin(postBody);
+    if(response.data.auth === true){
+      alert("Login realizado com sucesso!")
+      console.log(response.data)
+      //Redirecionar a pagina
+      window.location.href = mainPageUrl
+      // return(<Navigate to={mainPageUrl} replace={true}/>)
       // window.location.reload()
     }
     else{
-      alert("Erro ao cadastrar usuário!")
+      alert(response.data.message)
     }
   };
 
   return (
       <div className="register_popup">
             <div className="register_title">
-              CADASTRO
+              LOGIN
             </div>
-          <form className="register_form" onSubmit={(e) => handleSubmit(e, newUserData)} id="submitRegister">
+          <form className="register_form" onSubmit={(e) => handleSubmit(e, newUserData)}>
             <input type="hidden" name="remember" value="true" />
             <div className="register_inputs">
-              <div className="register_input_wrapper">
-                <label htmlFor="name" className="sr-only">
-                  Nickcname: 
-                </label>
-                <input
-                  id="name"
-                  className="register_input"
-                  name="name"
-                  required
-                  type="text"
-                  autoComplete="name"
-                  placeholder="Nome"
-                  value={newUserData.name}
-                  onChange={handleChange}
-                />
-              </div>
               <div className="register_input_wrapper">
                 <label htmlFor="email-address" className="sr-only">
                   Email: 
                 </label>
                 <input
-                  id="email-address"
                   className="register_input"
                   name="email"
                   required
@@ -72,7 +58,6 @@ export const UserRegister = () =>   {
                   Senha: 
                 </label>
                 <input
-                  id="password"
                   className="register_input"
                   name="password"
                   required
@@ -90,7 +75,7 @@ export const UserRegister = () =>   {
                 type="submit"
                 className="register_button"
               >
-                Cadastrar
+                Login
               </button>
             </div>
           </form>
