@@ -146,3 +146,32 @@ export async function AddLink(req: any, res: any){
         res.json({error: true})
     })
 }
+
+export async function DeleteLink(req: any, res: any){
+    VerifyToken(req, res);
+    const {url} = req.body
+    const firstLinkFound = await prisma.link.findFirst({
+        where: {
+            url: url,
+            userId: req.userId
+        }
+    })
+    //se o link existir
+    if (firstLinkFound){
+        const link = await prisma.link.delete({
+            where: {
+                id: firstLinkFound.id
+            }
+        }).then((link) => {
+            // sucesso
+            res.json({link: link, error: false})
+        }).catch((error) => {
+            //erro
+            res.json({error: true})
+        })
+    }
+    //se o link não existir
+    else{
+        res.json({error: true})
+    }
+}

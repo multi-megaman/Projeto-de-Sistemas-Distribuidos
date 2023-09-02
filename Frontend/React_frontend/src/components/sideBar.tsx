@@ -3,6 +3,7 @@ import Popup from 'reactjs-popup';
 import '../styles/sideBar.css'
 import rssLogo from '../assets/rss_logo.png'
 import {addNewLink} from '../services/addNewLink'
+import {deleteLink} from '../services/deleteLink'
 import { set } from 'date-fns';
 
 function getURLName(url: string){ //Atualmente parece que não faz nada, mas no futuro pode ser útil para diminuir o tamanho de uma url muito grande
@@ -10,11 +11,12 @@ function getURLName(url: string){ //Atualmente parece que não faz nada, mas no 
   return (objUrl.hostname + objUrl.pathname)
 }
 
+
 // TO DO: fazer com que a lista de URLs do usuário venha do backend
 function SideBar({user, links, updateRSSfeed, setUserLinks}: any) {
   // const [UserURLList, setUserURLList] = useState<string[]>([])
   const [newUrl, setNewUrl] = useState<string>('')
-
+  
   async function addUrl(url: string) {
     const response = await addNewLink(url);
     if(response.error === false){
@@ -25,6 +27,13 @@ function SideBar({user, links, updateRSSfeed, setUserLinks}: any) {
     }
   }
   
+  async function deleteUrl(url: string){
+    const response = await deleteLink(url);
+    if (response.error === false){
+      alert("URL deletada com sucesso!")
+      setUserLinks(links.filter((link: string) => link !== url))
+    }
+  }
   // useEffect(() => {
   //   // console.log("links: ",links)
   //   if(links ==! undefined){
@@ -49,8 +58,13 @@ function SideBar({user, links, updateRSSfeed, setUserLinks}: any) {
         <div className="sidebar_content">
           <ul className='user_url_list'>
           {links && (
-              links.map((url: string) => 
-                <li key={url} title={url} className="user_url" onClick={() => updateRSSfeed(url,20)}>{getURLName(url)}</li>)
+              links.map((url: string, i: number) => 
+                <li key={url+i} className="user_url" >
+                  <div className='user_link' title={url}  onClick={() => updateRSSfeed(url,20)}>
+                    {(url)}
+                  </div>
+                  <button className="user_url_button" onClick={() => deleteUrl(url)}>-</button>
+                </li>)
           )}
           
           </ul>

@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import {CreateUser, Login, GetUserData, AddLink} from './database'
+import {CreateUser, Login, GetUserData, AddLink, DeleteLink} from './database'
 const app = express();
 const PORT = 3000;
 
@@ -32,6 +32,11 @@ app.post('/user/infos', (req, res) => {
 app.post('/user/addNewLink', (req, res) => {
   AddLink(req, res);
 });
+
+app.post('/user/deleteLink', (req, res) => {
+  DeleteLink(req, res);
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
