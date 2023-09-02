@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import {CreateUser, Login, GetUserData} from './database'
+import {CreateUser, Login, GetUserData, AddLink} from './database'
 const app = express();
 const PORT = 3000;
 
@@ -27,6 +27,10 @@ app.post('/login', (req, res) => {
 
 app.post('/user/infos', (req, res) => {
   GetUserData(req, res);
+});
+
+app.post('/user/addNewLink', (req, res) => {
+  AddLink(req, res);
 });
 
 app.listen(PORT, () => {

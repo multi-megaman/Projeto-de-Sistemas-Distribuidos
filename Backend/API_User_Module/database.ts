@@ -90,6 +90,7 @@ export async function Login(req: any, res: any) {
             })
             //retirando a senha do usuário antes de retornar
             u.password = ""
+            u.id = 0
             res.json({ auth: true, token: token, user: JSON.stringify(u) })
         }
     })
@@ -98,6 +99,7 @@ export async function Login(req: any, res: any) {
 // Retorna os dados do usuário logado
 export async function GetUserData(req: any, res: any) {
     VerifyToken(req, res);
+
     //fazendo uma consulta ao banco de dados na tabela de links para pegar os links do usuário
     const links = await prisma.link.findMany({
         where: {
@@ -105,9 +107,7 @@ export async function GetUserData(req: any, res: any) {
         }
     }).then((links) => {
         //dando um refresh no token do usuário
-        const token = jwt.sign({ id: req.userId }, process.env.SECRET as string, {
-            expiresIn: 86400 // expira em 24 horas
-        })
+        console.log(req.userId)
         //capturando as informações atualizadas do usuário
         const user = prisma.user.findUnique({
             where: {
@@ -115,10 +115,34 @@ export async function GetUserData(req: any, res: any) {
             }
         }).then((user) => {
             //retirando a senha do usuário antes de retornar
+            const token = jwt.sign({ id: req.userId }, process.env.SECRET as string, {
+                expiresIn: 86400 // expira em 24 horas
+            })
             user!.password = ""
-            res.json({ auth: true, user: JSON.stringify(user), links: JSON.stringify(links), token: token })
+            user!.id = 0
+            //pegando apenas a url dos links
+            const urls = links.map((link) => {
+                return link.url
+            })
+
+            res.json({ auth: true, user: JSON.stringify(user), links: JSON.stringify(urls), token: token })
         })
 
     })
     
+}
+
+export async function AddLink(req: any, res: any){
+    VerifyToken(req, res);
+    const {url} = req.body
+    const link = await prisma.link.create({
+        data: {
+            url: url,
+            userId: req.userId
+        }
+    }).then((link) => {
+        res.json({link: link, error: false})
+    }).catch((error) => {
+        res.json({error: true})
+    })
 }

@@ -16,8 +16,9 @@ import { set } from "date-fns";
 
 function MainPage() {
   const [RSSfeed, setRSSfeed] = useState<any>(null)
-  const [userData, setUserData] = useState<any>({})
+  const [userData, setUserData] = useState<any>(null)
   const [userLinks, setUserLinks] = useState<string[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
 
 
@@ -29,7 +30,7 @@ function MainPage() {
     setUserData(JSON.parse(userInfos.user));
     // console.log("userInfos: ", JSON.parse(userInfos.user));
     setUserLinks(JSON.parse(userInfos.links));
-    console.log("userLinks: ", JSON.parse(userInfos.links));
+    // console.log("userLinksssss: ", JSON.parse(userInfos.links));
 
     return userInfos;
   }
@@ -38,21 +39,26 @@ function MainPage() {
 
 
     //se o Cookie não existir, redirecionar para a home page
-    if(Cookies.get("user") === undefined){
+    if(Cookies.get("token") === "undefined"){
       window.location.href = "/";
     }
 
     initUserInfos();
+    setLoading(false);
   }, [])
 
   async function updateRSSfeed(url: string, qnt: number) {
     const feed = await getRSSFeedFromURL(url, qnt)
     setRSSfeed(feed)
   }
+  console.log("token: ", Cookies.get("token"));
   return (
     <div className="mainPage_content">
       {/* SideBar */}
-      <SideBar user={userData} link={userLinks} updateRSSfeed={updateRSSfeed}/>
+
+        <SideBar user={userData} links={userLinks} updateRSSfeed={updateRSSfeed} setUserLinks={setUserLinks}/>
+
+      {/* <SideBar user={userData} link={userLinks} updateRSSfeed={updateRSSfeed}/> */}
       
       {/* Content */}
       <div className="user_content">

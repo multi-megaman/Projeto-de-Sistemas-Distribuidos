@@ -90,3 +90,33 @@
     justify-content:center;
     font-weight: bold;
 }
+
+.add_url{
+    width: 30vw;
+    height: 30vh;
+    background-color: rgb(58, 58, 58);
+    border-radius: 15px;
+    border: none;
+    color: rgb(26, 26, 26);
+    font-weight: bold;
+    font-size: 12px;
+    transition: 0.25s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:space-around;
+    text-align: center;
+    overflow: hidden;
+}
+
+.add_url_input{
+    width: 75%;
+    height: 25%;
+    background-color: rgb(247, 168, 66);
+    border-radius: 15px;
+    border: none;
+    color: rgb(26, 26, 26);
+    font-weight: bold;
+    font-size: 12px;
+    transition: 0.25s;
+}
