@@ -1,22 +1,26 @@
 import * as nodemailer from 'nodemailer';
+import * as dotenv from 'dotenv';
+
+dotenv.config()
+
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     port: 465,
     secure: true,
     auth: {
-        user: 'nekokyousuke@gmail.com',
-        pass: 'riqodhdlmyuxcnab'
+        user: process.env.USER,
+        pass: process.env.SENHA
     }
 });
 
 export async function notify(req: any, res: any) {
     const { email, userName } = req.body
     const mail = {
-        from: '"RSS Feeder - SD" <nekokyousuke@gmail.com>', // sender address
+        from: `"RSS Feeder - SD" <${process.env.USER}>`, // sender address
         to: email, // list of receivers
-        subject: 'Olá, ${userName}!', // Subject line
-        text: "Hello world?", // plain text body
+        subject: `Olá, ${userName}!`, // Subject line
+        text: "i LOVE DIO", // plain text body
         //html: "<b>Hello world?</b>", // html body
     }
     try {
