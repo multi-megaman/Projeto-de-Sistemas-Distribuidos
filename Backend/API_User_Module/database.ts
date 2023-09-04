@@ -1,5 +1,9 @@
 import { PrismaClient } from '@prisma/client'
 import jwt, { JwtPayload } from "jsonwebtoken";
+import * as dotenv from 'dotenv';
+
+dotenv.config()
+
 
 import express from "express";
 
@@ -130,6 +134,81 @@ export async function GetUserData(req: any, res: any) {
 
     })
     
+}
+
+export async function GetLink(req: any, res: any) {
+    const { url } = req.body;
+    const links = await prisma.link.groupBy({
+        by: ["url"],
+        _count: {
+            url: true,
+            _all: true
+        }
+    });
+    
+    // Extraia as URLs únicas da resposta do Prisma
+    const uniqueLinks = links.map(link => link.url);
+
+    if (uniqueLinks) {
+        res.json({ link: uniqueLinks, error: false });
+    } else {
+        res.json({ error: true });
+    }
+}
+
+export async function GetLinkUsers(req: any, res: any) {
+    const { url } = req.body;
+    console.log(url)
+    try {
+        // Consulta o Prisma para buscar os userId com base na URL fornecida
+        const links = await prisma.link.findMany({
+            where: {
+                url: url
+            },
+            select: {
+                userId: true
+            }
+        });
+
+        if (links) {
+            // Extrai os userIds das entradas encontradas
+            const userIds = links.map(link => link.userId);
+
+            res.json({ userIds: userIds, error: false });
+        } else {
+            res.json({ error: true, message: "Nenhum usuário encontrado para a URL fornecida." });
+        }
+    } catch (error) {
+        res.status(500).json({ error: true, message: "Ocorreu um erro ao processar a solicitação." });
+    }
+}
+
+export async function GetUsersEmails(req: any, res: any) {
+    const { userIds } = req.body;
+    try {
+        // Consulta o Prisma para buscar os e-mails correspondentes aos userIds fornecidos
+        const emails = await prisma.user.findMany({
+            where: {
+                id: {
+                    in: userIds
+                }
+            },
+            select: {
+                email: true
+            }
+        });
+
+        if (emails.length > 0) {
+            // Extrai os e-mails das entradas encontradas
+            const emailList = emails.map(user => user.email);
+
+            res.json({ emails: emailList, error: false });
+        } else {
+            res.json({ error: true, message: "Nenhum e-mail correspondente encontrado." });
+        }
+    } catch (error) {
+        res.status(500).json({ error: true, message: "Ocorreu um erro ao processar a solicitação." });
+    }
 }
 
 export async function AddLink(req: any, res: any){

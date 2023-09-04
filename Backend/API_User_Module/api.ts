@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import {CreateUser, Login, GetUserData, AddLink, DeleteLink} from './database'
+import {CreateUser, Login, GetUserData, AddLink, DeleteLink, GetLink, GetLinkUsers, GetUsersEmails} from './database'
 const app = express();
 const PORT = 3000;
 
@@ -15,6 +15,21 @@ app.get('/', (req, res) => {
   res.send('User Module API');
 });
 
+app.get('/getLink', (req, res) => {
+  console.log("Sucesso no getlink")
+  GetLink(req, res);
+});
+
+app.get('/getLinkUsers', (req, res) => {
+  console.log("Sucesso no getLinkUsers")
+  GetLinkUsers(req, res);
+});
+
+app.get('/getUsersEmails', (req, res) => {
+  console.log("Sucesso no getUsersEmails")
+  GetUsersEmails(req, res);
+});
+
 app.post('/createUser', (req, res) => {
   CreateUser(req, res);
 
@@ -22,7 +37,6 @@ app.post('/createUser', (req, res) => {
 
 app.post('/login', (req, res) => {
   Login(req, res);
-
 });
 
 app.post('/user/infos', (req, res) => {
