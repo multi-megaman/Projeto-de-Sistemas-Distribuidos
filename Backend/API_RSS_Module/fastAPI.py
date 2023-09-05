@@ -2,8 +2,10 @@
 
 from fastapi import FastAPI
 from pydantic import BaseModel
+from typing import List
 
 import json
+import random
 import schedule
 import time
 import datetime
@@ -59,6 +61,24 @@ def getRSS(url: str, qnt: int | None = None):
     #     feed.append(feedparser.parse(findedFeed).entries)
     # print(feed)
     return {"Feed": feed}
+
+@app.post("/getFeedFromList")
+def getRSSList(urlList: List[str]):
+    qnt = 20
+    feed = []
+    for url in urlList:
+        #Pegar apenas as 5 primeiras notícias de cada feed
+        feed += generalised_parse(url)[:5]
+    if qnt is not None and qnt > 0:
+        if qnt != None:
+            if qnt > len(feed):
+                qnt = len(feed)
+            feed = feed[:qnt]
+    #Embaralha a ordem das notícias
+    # random.shuffle(feed)
+    return {"Feed": feed}
+
+
 
 # @app.post("/postarInfo")
 # def getTitulo(noticia: Noticia):

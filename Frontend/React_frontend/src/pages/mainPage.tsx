@@ -7,6 +7,7 @@ import {News} from '../components/News'
 // import SideBar from '../components/sideBar/sideBar';
 import {getRSSFeedFromURL} from '../services/getRSSFeedFromURL'
 import {getLoggedUserInfos} from '../services/getLoggedUserInfos'
+import { getRSSFeedFromList } from "../services/getRSSFeedFromList";
 import SideBar from "../components/sideBar";
 import Cookies from "js-cookie";
 import { set } from "date-fns";
@@ -30,7 +31,13 @@ function MainPage() {
     setUserData(JSON.parse(userInfos.user));
     // console.log("userInfos: ", JSON.parse(userInfos.user));
     setUserLinks(JSON.parse(userInfos.links));
-    // console.log("userLinksssss: ", JSON.parse(userInfos.links));
+
+    const initialFeed: any = await getRSSFeedFromList(JSON.parse(userInfos.links), 20).then((res) => {
+      console.log(res)
+    if (res.status == 200) {
+      setRSSfeed(res.data.Feed);
+    }
+    });
 
     return userInfos;
   }
@@ -51,7 +58,6 @@ function MainPage() {
     const feed = await getRSSFeedFromURL(url, qnt)
     setRSSfeed(feed)
   }
-  console.log("token: ", Cookies.get("token"));
   return (
     <div className="mainPage_content">
       {/* SideBar */}
