@@ -10,6 +10,7 @@ import {getLoggedUserInfos} from '../services/getLoggedUserInfos'
 import { getRSSFeedFromList } from "../services/getRSSFeedFromList";
 import SideBar from "../components/sideBar";
 import Cookies from "js-cookie";
+import Popup from 'reactjs-popup';
 import { set } from "date-fns";
 
 
@@ -32,7 +33,7 @@ function MainPage() {
     // console.log("userInfos: ", JSON.parse(userInfos.user));
     setUserLinks(JSON.parse(userInfos.links));
 
-    const initialFeed: any = await getRSSFeedFromList(JSON.parse(userInfos.links), 20).then((res) => {
+    const initialFeed: any = await getRSSFeedFromList(JSON.parse(userInfos.links), 20).then((res: any) => {
       console.log(res)
     if (res.status == 200) {
       setRSSfeed(res.data.Feed);
@@ -63,6 +64,14 @@ function MainPage() {
       {/* SideBar */}
 
         <SideBar user={userData} links={userLinks} updateRSSfeed={updateRSSfeed} setUserLinks={setUserLinks}/>
+        <Popup trigger={<button className="botao_teste">?</button>} modal>
+          <div className="lista_links">Links para testes:<br/> 
+                                        Imagens: https://timesofindia.indiatimes.com/rssfeedstopstories.cms <br/> 
+                                        Audio: https://rss.art19.com/apology-line <br/>
+                                        UFRPE: https://www.ufrpe.br/rss.xml <br/>
+                                        </div>
+        </Popup>
+        
 
       {/* <SideBar user={userData} link={userLinks} updateRSSfeed={updateRSSfeed}/> */}
       

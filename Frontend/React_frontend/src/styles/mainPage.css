@@ -19,3 +19,31 @@
 .feed_rss{
     width: 100%;
 }
+
+.botao_teste{
+    position: absolute;
+    top:0;
+    left:0;
+    background-color: rgb(145, 145, 145);
+    color: black;
+    font-size: x-large;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.lista_links{
+    width: 75vw;
+    height: 75vh;
+    background-color: rgb(63, 63, 63);
+    border-radius: 25px;
+    padding: 1%;
+    font-size: xx-large;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+}
