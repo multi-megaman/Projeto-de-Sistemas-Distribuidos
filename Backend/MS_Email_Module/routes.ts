@@ -1,6 +1,6 @@
 import express from 'express';
 
-import {notify} from './mail';
+import {notifyAll} from './mail';
 
 const app = express();
 const PORT = 3001;
@@ -12,4 +12,4 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-app.post('/notify', notify);
+app.post('/notifyAll', notifyAll);

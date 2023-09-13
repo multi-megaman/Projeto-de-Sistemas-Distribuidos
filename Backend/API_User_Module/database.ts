@@ -156,51 +156,26 @@ export async function GetLink(req: any, res: any) {
     }
 }
 
-export async function GetLinkUsers(req: any, res: any) {
+export async function GetEmailsByLink(req: any, res: any) {
     const { url } = req.body;
-    console.log(url)
     try {
-        // Consulta o Prisma para buscar os userId com base na URL fornecida
-        const links = await prisma.link.findMany({
+        // Consulta o Prisma para buscar os e-mails correspondentes à URL fornecida
+        const emails = await prisma.link.findMany({
             where: {
                 url: url
             },
             select: {
-                userId: true
-            }
-        });
-
-        if (links) {
-            // Extrai os userIds das entradas encontradas
-            const userIds = links.map(link => link.userId);
-
-            res.json({ userIds: userIds, error: false });
-        } else {
-            res.json({ error: true, message: "Nenhum usuário encontrado para a URL fornecida." });
-        }
-    } catch (error) {
-        res.status(500).json({ error: true, message: "Ocorreu um erro ao processar a solicitação." });
-    }
-}
-
-export async function GetUsersEmails(req: any, res: any) {
-    const { userIds } = req.body;
-    try {
-        // Consulta o Prisma para buscar os e-mails correspondentes aos userIds fornecidos
-        const emails = await prisma.user.findMany({
-            where: {
-                id: {
-                    in: userIds
+                user: {
+                    select: {
+                        email: true
+                    }
                 }
-            },
-            select: {
-                email: true
             }
         });
 
         if (emails.length > 0) {
             // Extrai os e-mails das entradas encontradas
-            const emailList = emails.map(user => user.email);
+            const emailList = emails.map(entry => entry.user.email);
 
             res.json({ emails: emailList, error: false });
         } else {

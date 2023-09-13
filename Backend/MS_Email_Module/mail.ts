@@ -13,8 +13,8 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-export async function notify(req: any, res: any) {
-    const { email, title, summary, link } = req.body
+export async function notify(data: { email: any; title: any; summary: any; link: any; }) {
+    const { email, title, summary, link } = data
     const mail = {
         from: `"RSS Feeder - SD" <${process.env.USER}>`, // sender address
         to: email, // list of receivers
@@ -33,10 +33,31 @@ export async function notify(req: any, res: any) {
     try {
         await transporter.sendMail(mail)
         console.log("Notificação enviada!");
-        res.status(200).json({ message: "Notification sent successfully" });
+    } catch (error) {
+        console.error("Erro no MS:", error);
+    }
+}
+
+export async function notifyAll(req: any, res: any) {
+    const { emailsList, entry } = req.body;
+
+    console.log(req.body)
+
+    // Use Promise.all para esperar que todas as notificações sejam enviadas
+    try {
+        await Promise.all(emailsList.map(async (email: string) => {
+            let data = {
+                email,
+                title: entry.title || '',
+                summary: entry.summary || '',
+                link: entry.link || '',
+            };
+
+            await notify(data);
+        }));
+        res.status(200).json({ message: "All notifications sent successfully" });
     } catch (error) {
         console.error("Erro no MS:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 }
-
