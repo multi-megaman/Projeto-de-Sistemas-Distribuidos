@@ -101,7 +101,7 @@ def updates_to_notify_package(data):
 def fetch_new_updates(url: str):
     news = getRSS(url, 10)
     updates = []
-    last_fetch = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(minutes=30)
+    last_fetch = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(minutes=20)
 
     for entry in news["Feed"]:
         # Obtenha a data de publicação da notícia 
@@ -125,7 +125,6 @@ def fetch_new_updates(url: str):
 
 if __name__ == '__main__':
     import uvicorn
-    import threading
 
     uvicorn.run('fastAPI:app', host='127.0.0.1', port=8080, log_level='info')
 
