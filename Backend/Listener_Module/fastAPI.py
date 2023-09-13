@@ -4,11 +4,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
 
-import json
-import random
 import schedule
 import time
-import datetime
 import requests
 
 from feedfinder2 import find_feeds
@@ -34,11 +31,6 @@ app.add_middleware(
 def read_root():
     return {"Projeto": "SD"}
 
-"""
-            emails = fetch_user_emails(url)
-            notify_All(emails, entry)
-"""
-
 @app.get("/listener")
 def listener():
 
@@ -58,7 +50,7 @@ def listener():
             )
     
     else:
-        print("Falha ao obter o JSON da API")
+        print("Falha ao obter os links")
     
 
 def schedule_listener():
